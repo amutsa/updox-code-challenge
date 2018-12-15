@@ -1,0 +1,10 @@
+.CreateProvider-wrapper {
+    width: 40%;
+    height: 300px;
+    padding: 10px;
+    margin: 0 5px;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 3px #ccc;
+    background-color: rgb(247, 243, 243);
+
+}
