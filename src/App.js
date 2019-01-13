@@ -1,24 +1,18 @@
 import React, { Component } from 'react';
 import './App.css';
-import './CreateProvider/CreateProvider.css';
-import './ProviderList/ProviderList.css';
-import CreateProvider from './CreateProvider/CreateProvider';
-import ProviderList from './ProviderList/ProviderList';
+
+import ContainedBlog from './containers/ContainedBlog';
 
 class App extends Component {
   render() {
+    let paragraph = ['p'].join(' '); /* to change the text color of the v2.0 text in the paragraph.*/
+
+    
     return (
       <div className="App">
       <h1>Provider Directory</h1>
-      <p>v2.0</p>
-        <div className = "content-wrapper">
-          <div className= "CreateProvider-wrapper">
-          <CreateProvider></CreateProvider>
-          </div>
-          <div className= "ProviderList-wrapper">
-          <ProviderList></ProviderList>
-          </div>
-        </div>
+      <p className={paragraph}>v2.0</p>
+        <ContainedBlog/>
       </div>
     );
   }

@@ -1,0 +1,33 @@
+.Post {
+    width: 100%;
+    min-height: 60px;
+    display: inline-flex;
+    padding: 1px;
+    text-align: left;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 3px #ccc;
+    margin: auto;
+    box-sizing: border-box;
+    cursor: pointer;
+    
+}
+.Post-content {
+    width: 100%;
+    display: inline-flex;
+    padding: 1px;
+    text-align: left;
+}
+.Post input{
+    width: 15px;
+    height: 15px;
+    margin: 15px; 
+}
+.Post:hover,
+.Post:active {
+    background-color: #C0DDF5;
+}
+
+.Author {
+    margin: 16px 0;
+    color: #ccc;
+}
