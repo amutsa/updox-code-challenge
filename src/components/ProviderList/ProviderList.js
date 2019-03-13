@@ -1,67 +1,115 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import axios from '../../axios-providers';
 import Post from '../../components/Post/Post';
 import Dropdown from './Dropdown/Dropdown';
-
-
-import '../ProviderList/ProviderList.css';
+//import Update from '../Update/Update';
+import _ from 'lodash';
+import styles from'../ProviderList/ProviderList.css';
+import style from '../Post/Post.css';
 
 
 class ProviderList extends Component {
     
     state = {
         posts: [],
-        checkbox:false
+        loading: true,
+        selectedPostId: null,
+        orderBy: "first_name",
+        order: "asc",
       }
+
+      doOrderBy = this.doOrderBy.bind(this);
+      doOrder = this.doOrder.bind(this);
+
+      doOrderBy(e){
+        e.preventDefault();
+        const newOrderBy = e.target.getAttribute('data-value');
+        this.setState({orderBy : newOrderBy});
+      }
+
+      doOrder(e){
+        e.preventDefault();
+        const newOrder = e.target.getAttribute('data-value');
+        this.setState({order : newOrder});
+      }
+
+
       componentDidMount () {
-        axios.get('dataSource.json')
-          .then(response =>{this.setState({posts: response.data});
-          //console.log(response);
+        axios.get('/dataSource.json')
+          .then(response =>{
+            const fetchedData = [];
+            for (let key in response.data){
+              fetchedData.push({
+                ...response.data[key],
+                id: key
+              });
+            }
+            this.setState({loading: false, posts: fetchedData});
+            console.log(response);
+        }).catch(err => {
+          this.setState({loading: false});
         });
       }
+
+    handleCheckbox = (id) => {
+      this.setState({selectedPostId: id})
+      console.log({selectedPostId: id})
+    }
+
+   render() {
+
+    const orderBy = this.state.orderBy;
+    const order = this.state.order;
     
-      handleCheckbox(e){
-          let value = e.target.checked;
-        this.setState({checkbox: value})
-      }
-      handleInput(e){
-          let value = e.target.value;
-        this.setState({author: value}, {title: value})
-      }
+    let sorted = this.state.orderData;
     
-      render() {
+    sorted = _.orderBy(sorted, (item) => {return item[orderBy]}, order);     
+    
+    const items = sorted.map((item)=>{
+      return <Post data={ item } key={ item.id } orderBy={ this.state.orderBy } /> 
+    }); 
+    
         const posts = this.state.posts.map(post => {
-          return  <div className="Post">
-                    <div><input type="checkbox" onChange={this.handleCheckbox.bind(this)}/></div>                    
-                    <div><Post 
-                    key={post.id} 
-                    last_name={post.last_name}
-                    first_name={post.first_name}
-                    email_address={post.email_address}
-                    specialty={post.specialty}
-                    practice_name={post.practice_name}/>
-                    </div>                             
+     
+          return  <div className={style.Post}>
+                    <div>
+                      <input type="checkbox" 
+                                onChange={this.handleCheckbox.bind(this)}
+                                id={this.state.selectedPostId}/>
+                    </div>        
+                    <div>
+                       <Post 
+                            key={post.id} 
+                            orderData={post.orderData}
+                            orderBy={ this.state.orderBy }
+                            clicked={() => this.handleCheckbox(post.id)}/>
+                    </div>                              
                   </div>
         })
         
         return (
           <section>
-            <div className="ProviderList-wrapper">
-              <div className="ProviderList-sort">
+            <div className={styles.ProviderListWrapper}>
+              <div className={styles.ProviderListSort}>
                 <h3>Provider List</h3>
-                <Dropdown></Dropdown>
+                <Dropdown                   
+                doOrderBy={ this.doOrderBy }
+                doOrder={ this.doOrder }
+                orderBy={ this.state.orderBy }
+                order={ this.state.order } />
+
               </div>  
-              <div className= "ProviderList">
+              <div className= {styles.ProviderList}>
               
                 {posts}
               
               </div>
-              <div className="Edit"><button>Remove</button></div>
+              <div className={styles.Edit} onClick={this.deletePostHandler}><button>Remove</button></div>
             </div>
             
           </section> 
         );
       }
     }
-export default ProviderList;
+export default (ProviderList);
 

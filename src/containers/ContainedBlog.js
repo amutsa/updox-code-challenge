@@ -6,7 +6,7 @@ import ProviderList from '../components/ProviderList/ProviderList';
 
 
 
-import './ContainedBlog.css';
+import styles from './ContainedBlog.css';
 
 
 class ContainedBlog extends Component {
@@ -14,7 +14,7 @@ class ContainedBlog extends Component {
   render() {
 
     return (
-        <div className = "content-wrapper">
+        <div className = {styles.ContentWrapper}>
           <CreateProvider></CreateProvider>
           <ProviderList></ProviderList>
         </div>
@@ -23,30 +23,6 @@ class ContainedBlog extends Component {
 }
 
 export default ContainedBlog;
-
-/*
-  state = {
-    posts: [],
-    checkbox:false
-  }
-  componentDidMount () {
-    axios.get('http://jsonplaceholder.typicode.com/posts')
-      .then(response =>{this.setState({posts: response.data});
-      //console.log(response);
-    });
-
-
-  }
-
-  handleCheckbox(e){
-  	let value = e.target.checked;
-    this.setState({checkbox: value})
-  }
-  handleInput(e){
-  	let value = e.target.value;
-    this.setState({author: value}, {title: value})
-  }
-*/
 
 
   /*  const posts = this.state.posts.map(post => {

@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import axios from '../../axios-providers';
 
 import Button from '../CreateProvider/Button/Button';
 import Input from '../CreateProvider/Input/Input';
 import classes from './CreateProvider.css';
+//import Post from '../components/Post/Post';
 
 class CreateProvider extends Component {
     state = {
-        orderForm: {
-            name: {
+        submitForm: {
+            last_name: {
                 elementType: 'input',
                 elementConfig: {
                     type: 'text',
-                    placeholder: 'Your Name'
+                    placeholder: 'Last Name'
                 },
                 value: '',
                 validation: {
@@ -21,11 +22,11 @@ class CreateProvider extends Component {
                 valid: false,
                 touched: false
             },
-            street: {
+            first_name: {
                 elementType: 'input',
                 elementConfig: {
                     type: 'text',
-                    placeholder: 'Street'
+                    placeholder: 'Fisrt Name'
                 },
                 value: '',
                 validation: {
@@ -34,39 +35,40 @@ class CreateProvider extends Component {
                 valid: false,
                 touched: false
             },
-            zipCode: {
-                elementType: 'input',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'ZIP Code'
-                },
-                value: '',
-                validation: {
-                    required: true,
-                    minLength: 5,
-                    maxLength: 5
-                },
-                valid: false,
-                touched: false
-            },
-            country: {
-                elementType: 'input',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'Country'
-                },
-                value: '',
-                validation: {
-                    required: true
-                },
-                valid: false,
-                touched: false
-            },
-            email: {
+            email_address: {
                 elementType: 'input',
                 elementConfig: {
                     type: 'email',
-                    placeholder: 'Your E-Mail'
+                    placeholder: 'E-Mail address'
+                },
+                value: '',
+                validation: {
+                    isEmail: true,
+                    required: true
+                },
+                valid: false,
+                touched: false
+            },
+            specialty: {
+                elementType: 'select',
+                elementConfig: {
+                    options: [
+                        {value: '', displayValue: 'Speciality'},
+                        {value: 'Surgery', displayValue: 'Surgery'},
+                        {value: 'Pediatrics', displayValue: 'Pediatrics'},
+                        {value: 'Endocrinology', displayValue: 'Endocrinology'},
+                        {value: 'Podiatry', displayValue: 'Podiatry'},
+                    ]
+                },
+                value: '',
+                validation:{},
+                valid: true
+            },
+            practice_name: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Practice Name'
                 },
                 value: '',
                 validation: {
@@ -74,50 +76,45 @@ class CreateProvider extends Component {
                 },
                 valid: false,
                 touched: false
-            },
-            deliveryMethod: {
-                elementType: 'select',
-                elementConfig: {
-                    options: [
-                        {value: 'fastest', displayValue: 'Fastest'},
-                        {value: 'cheapest', displayValue: 'Cheapest'}
-                    ]
-                },
-                value: '',
-                valid: true
             }
         },
         formIsValid: false,
         loading: false
     }
 
-    orderHandler = ( event ) => {
+    formHandler = ( event ) => {
         event.preventDefault();
         this.setState( { loading: true } );
         const formData = {};
-        for (let formElementIdentifier in this.state.orderForm) {
-            formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value;
+        for (let formElementIdentifier in this.state.submitForm) {
+            formData[formElementIdentifier] = this.state.submitForm[formElementIdentifier].value;
         }
-        const order = {
-            ingredients: this.props.ingredients,
-            price: this.props.price,
-            orderData: formData
+        const data = {
+            formData: formData
         }
-        axios.post( '/orders.json', order )
-            .then( response => {
+        axios.post( '/dataSource.json', data )
+            .then(
+                response => console.log(response)/*  response => {
                 this.setState( { loading: false } );
-                this.props.history.push( '/' );
-            } )
-            .catch( error => {
+                this.props.history.push( '/'  );
+            }*/ ).catch(error => console.log(error) /* error => {
                 this.setState( { loading: false } );
-            } );
+            }  */);
     }
 
     checkValidity(value, rules) {
         let isValid = true;
+        if (!rules) {
+            return true;
+        }
         
         if (rules.required) {
             isValid = value.trim() !== '' && isValid;
+        }
+
+        if (rules.isEmail) {
+            const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+            isValid = pattern.test(value) && isValid
         }
 
         if (rules.minLength) {
@@ -127,39 +124,38 @@ class CreateProvider extends Component {
         if (rules.maxLength) {
             isValid = value.length <= rules.maxLength && isValid
         }
-
         return isValid;
     }
 
     inputChangedHandler = (event, inputIdentifier) => {
-        const updatedOrderForm = {
-            ...this.state.orderForm
+        const updatedsubmitForm = {
+            ...this.state.submitForm
         };
         const updatedFormElement = { 
-            ...updatedOrderForm[inputIdentifier]
+            ...updatedsubmitForm[inputIdentifier]
         };
         updatedFormElement.value = event.target.value;
         updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
         updatedFormElement.touched = true;
-        updatedOrderForm[inputIdentifier] = updatedFormElement;
+        updatedsubmitForm[inputIdentifier] = updatedFormElement;
         
         let formIsValid = true;
-        for (let inputIdentifier in updatedOrderForm) {
-            formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid;
+        for (let inputIdentifier in updatedsubmitForm) {
+            formIsValid = updatedsubmitForm[inputIdentifier].valid && formIsValid;
         }
-        this.setState({orderForm: updatedOrderForm, formIsValid: formIsValid});
+        this.setState({submitForm: updatedsubmitForm, formIsValid: formIsValid});
     }
 
     render () {
         const formElementsArray = [];
-        for (let key in this.state.orderForm) {
+        for (let key in this.state.submitForm) {
             formElementsArray.push({
                 id: key,
-                config: this.state.orderForm[key]
+                config: this.state.submitForm[key]
             });
         }
         let form = (
-            <form onSubmit={this.orderHandler}>
+            <form onSubmit={this.formHandler}>
                 {formElementsArray.map(formElement => (
                     <Input 
                         key={formElement.id}
@@ -171,13 +167,13 @@ class CreateProvider extends Component {
                         touched={formElement.config.touched}
                         changed={(event) => this.inputChangedHandler(event, formElement.id)} />
                 ))}
-                <Button btnType="Success" disabled={!this.state.formIsValid}>ORDER</Button>
+                <Button btnType="Success" disabled={!this.state.formIsValid}>Submit</Button>
             </form>
         );
 
         return (
             <div className={classes.CreateProvider}>
-                <h4>Enter your Contact Data</h4>
+                <h3>Create Provider</h3>
                 {form}
             </div>
         );
@@ -280,29 +276,5 @@ export default CreateProvider;
             );
         }
         return post;*/
-/* 
-    render () {
-        return (
-            <div className= "CreateProvider-wrapper">
-                <h3>Create Provider</h3>
-                <label>Last Name</label>
-                <input type="text" value={this.state.last_name} onChange={(event) => this.setState({last_name: event.target.value})} />
-                <label>First Name</label>
-                <input type="text" value={this.state.first_name} onChange={(event) => this.setState({first_name: event.target.value})} />
 
-                <label>Email Address</label>
-                <input type="text" value={this.state.email_address} onChange={(event) => this.setState({email_address: event.target.value})} />
-
-                <label>Speciality</label>
-                <input type="text" value={this.state.speciality} onChange={(event) => this.setState({speciality: event.target.value})} />
-
-                <label>Practice Name</label>
-                <input type="text" value={this.state.practice_name} onChange={(event) => this.setState({practice_name: event.target.value})} />
-               
-                <button onClick={this.postDataHandler}>Submit</button>
-            </div>
-        );
-    }
-}
- */
 

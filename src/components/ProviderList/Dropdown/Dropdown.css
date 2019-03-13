@@ -1,5 +1,7 @@
+/* Glyphicons*/
+@import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css");
 
-.dropdown {
+.Dropdown {
     position: relative;
     display: block;
     float: right;
@@ -37,7 +39,7 @@ li:hover {
     background-color: #e5e5e5;
     color: white;
 }
-.dropdown .button{
+.Dropdown .Button{
     width:100px;
     height:20px;
     background-color: whitesmoke ;
@@ -48,7 +50,7 @@ li:hover {
     color:  #000;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
-.dropdown .button:before{
+.Dropdown .Button:before{
     content:"";
     position:absolute;
     width:0px;
@@ -57,4 +59,46 @@ li:hover {
     border-color: #000 transparent transparent transparent;
     right: 10px;
     top:10px;
-}
+} 
+
+h1 {
+    margin-bottom: 50px;
+  }
+  .col-sm-8 {
+    background: #fff;
+    border: 1px solid #8b7ecd;
+    border-radius: 3px;
+  }
+  small {
+    color: #5bc0de;
+  }
+  span.active {
+    color: #9C27B0;
+  }
+  small.active {
+    color: #9C27B0;
+    font-weight: 700;
+  }
+  h4 {
+    font-size: 20px;
+  }
+  .btn .caret {
+    margin-left: 5px;
+  }
+  .author {
+    padding: 50px 0 0;
+    color: #9C27B0;
+  }
+  .media-left img {
+    border: 1px solid #9C27B0;
+    border-radius: 3px;
+  }
+  .dropdownmenu a {
+    position: relative;
+  }
+  .glyphicon_ok {
+    position: absolute;
+    top: 4px;
+    right: 15px;
+  }
+  

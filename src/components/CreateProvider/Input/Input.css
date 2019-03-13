@@ -1,13 +1,13 @@
 .Input {
     width: 100%;
-    padding: 10px;
+    padding: 0px;
     box-sizing: border-box;
 }
 
 .Label {
     font-weight: bold;
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 2px;
 }
 
 .InputElement {
@@ -19,6 +19,7 @@
     display: block;
     width: 100%;
     box-sizing: border-box;
+    border-radius: 5px;
 }
 
 .InputElement:focus {
@@ -30,3 +31,8 @@
     border: 1px solid red;
     background-color: #FDA49A;
 }
+
+.ValidationError {
+    color: red;
+    margin: 5px 0;
+} 

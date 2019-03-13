@@ -11,16 +11,17 @@
     cursor: pointer;
     
 }
-.Post-content {
+.PostContent {
     width: 100%;
     display: inline-flex;
+    justify-content: flex-start;
     padding: 1px;
-    text-align: left;
 }
-.Post input{
-    width: 15px;
-    height: 15px;
-    margin: 15px; 
+.PostLeft{
+    float: right;
+}
+h6{
+    margin: 5px;
 }
 .Post:hover,
 .Post:active {

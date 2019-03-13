@@ -10,16 +10,15 @@ const input = ( props ) => {
         inputClasses.push(classes.Invalid);
     }
 
+    let validationError = null;
+
+    if (props.invalid && props.touched) {
+    validationError = <p className={classes.ValidationError}>{props.errorMessage}</p>;
+}
+
     switch ( props.elementType ) {
         case ( 'input' ):
             inputElement = <input
-                className={inputClasses.join(' ')}
-                {...props.elementConfig}
-                value={props.value}
-                onChange={props.changed} />;
-            break;
-        case ( 'textarea' ):
-            inputElement = <textarea
                 className={inputClasses.join(' ')}
                 {...props.elementConfig}
                 value={props.value}
@@ -51,6 +50,7 @@ const input = ( props ) => {
         <div className={classes.Input}>
             <label className={classes.Label}>{props.label}</label>
             {inputElement}
+            {validationError}
         </div>
     );
 
